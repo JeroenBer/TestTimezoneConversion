@@ -23,16 +23,14 @@ namespace TestTimezoneConversion.Util
 
             var timeInMs = calendar.TimeInMillis;
 
-            // Vieze truck, gaat waarschijnlijk niet altijd goed.
-            // Zie https://stackoverflow.com/questions/6088778/converting-utc-dates-to-other-timezones (3e optie)
+            // Dirty trick, might not always work correctly ?
+            // See https://stackoverflow.com/questions/6088778/converting-utc-dates-to-other-timezones (3rd option)
             var fromOffset = androidSourceTimeZone.GetOffset(timeInMs);
             var toOffset = androidDestinationTimeZone.GetOffset(timeInMs);
 
             var diff = fromOffset - toOffset;
 
             var result = dateTime.AddMilliseconds(diff * -1).WithKind(DateTimeKind.Unspecified);
-
-            //Debug.WriteLine($"ConvertTime FROM {dateTime:yyyy-MM-dd HH:mm:ss} {sourceTimeZoneId} -> {result:yyyy-MM-dd HH:mm:ss} {destinationTimeZoneId}");
 
             return result;
         }

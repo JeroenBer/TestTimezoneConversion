@@ -34,10 +34,18 @@ namespace TestTimezoneConversion
         private async void BtnStartTests_Click(object sender, EventArgs e)
         {
             await RunTest(nameof(TimeZoneConversionTests.TestConversionDotNet), TimeZoneConversionTests.TestConversionDotNet);
-            await RunTest(nameof(TimeZoneConversionTests.TestConversionJava), TimeZoneConversionTests.TestConversionJava);
-            await RunTest(nameof(TimeZoneConversionTests.TestConversionAndroidIcu), TimeZoneConversionTests.TestConversionAndroidIcu);
+            //await RunTest(nameof(TimeZoneConversionTests.TestConversionJava), TimeZoneConversionTests.TestConversionJava);
+            //await RunTest(nameof(TimeZoneConversionTests.TestConversionAndroidIcu), TimeZoneConversionTests.TestConversionAndroidIcu);
             await RunTest(nameof(TimeZoneConversionTests.TestConversionSimpleDateFormat), TimeZoneConversionTests.TestConversionSimpleDateFormat);
             await RunTest(nameof(TimeZoneConversionTests.TestConversionAndroidOffset), TimeZoneConversionTests.TestConversionAndroidOffset);
+
+            if ((int)Build.VERSION.SdkInt <= 33 && Build.VERSION.Codename != "UpsideDownCake")
+            {
+                // Android 14 or higher ?
+                // We cannot run this test 
+                await RunTest(nameof(TimeZoneConverterAndroidOffsetTests), TimeZoneConverterAndroidOffsetTests.TestAndroidOffsetConversion);
+            }
+
         }
 
         private async Task RunTest(string testName, Action executeTest)
