@@ -13,10 +13,11 @@ namespace TestTimezoneConversion.Util
 {
     public class TimeZoneConverterAndroidOffset : ITimeZoneConverter
     {
+        private object _lock = new object();
+
         private Dictionary<string, Java.Util.TimeZone> _timezones = new Dictionary<string, Java.Util.TimeZone>();
         private Dictionary<string, Java.Util.Calendar> _calendars = new Dictionary<string, Java.Util.Calendar>();
 
-        private object _lock = new object();
 
         public DateTime Convert(DateTime dateTime, string sourceTimeZoneId, string destinationTimeZoneId)
         {

@@ -16,6 +16,8 @@ namespace TestTimezoneConversion.Util
         const string JavaDateFormat = "yyyyMMddHHmmss";
         const string NetDateFormat = "yyyyMMddHHmmss";
 
+        private object _lock = new object();
+
         private Dictionary<string, Android.Icu.Util.TimeZone> _timezones = new Dictionary<string, Android.Icu.Util.TimeZone>();
 
         private Android.Icu.Text.SimpleDateFormat formatter = new Android.Icu.Text.SimpleDateFormat(JavaDateFormat);
@@ -24,20 +26,24 @@ namespace TestTimezoneConversion.Util
         {
             // Conversion this way works but is very inefficient
             // Only for API level 24 and higher
-            if (dateTime.Year <= 1) return dateTime;
 
-            var androidSourceTimeZone = GetCachedTimeZone(sourceTimeZoneId);
-            var androidDestinationTimeZone = GetCachedTimeZone(destinationTimeZoneId);
+            lock (_lock) // Not sure if it's thread safe, just in case
+            {
+                if (dateTime.Year <= 1) return dateTime;
 
-            formatter.TimeZone = androidSourceTimeZone;
-            var parsedDt = formatter.Parse(dateTime.ToString(NetDateFormat));
+                var androidSourceTimeZone = GetCachedTimeZone(sourceTimeZoneId);
+                var androidDestinationTimeZone = GetCachedTimeZone(destinationTimeZoneId);
 
-            formatter.TimeZone = androidDestinationTimeZone;
-            var resultDtString = formatter.Format(parsedDt);
+                formatter.TimeZone = androidSourceTimeZone;
+                var parsedDt = formatter.Parse(dateTime.ToString(NetDateFormat));
 
-            var result = DateTime.ParseExact(resultDtString, NetDateFormat, null, System.Globalization.DateTimeStyles.None);
+                formatter.TimeZone = androidDestinationTimeZone;
+                var resultDtString = formatter.Format(parsedDt);
 
-            return result;
+                var result = DateTime.ParseExact(resultDtString, NetDateFormat, null, System.Globalization.DateTimeStyles.None);
+
+                return result;
+            }
         }
 
         private Android.Icu.Util.TimeZone GetCachedTimeZone(string id)
