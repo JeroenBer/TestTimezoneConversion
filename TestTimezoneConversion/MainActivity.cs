@@ -51,7 +51,6 @@ namespace TestTimezoneConversion
                 // We cannot run this test 
                 await RunTest(nameof(TimeZoneConverterAndroidOffsetTests), TimeZoneConverterAndroidOffsetTests.TestAndroidOffsetConversion);
             }
-
         }
 
         private async Task RunTest(string testName, Action executeTest)
