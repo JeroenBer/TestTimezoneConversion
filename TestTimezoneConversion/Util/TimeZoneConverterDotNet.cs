@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TestTimezoneConversion
+namespace TestTimezoneConversion.Util
 {
     public class TimeZoneConverterDotNet : ITimeZoneConverter
     {

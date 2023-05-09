@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestTimezoneConversion
+namespace TestTimezoneConversion.Util
 {
     public interface ITimeZoneConverter
     {

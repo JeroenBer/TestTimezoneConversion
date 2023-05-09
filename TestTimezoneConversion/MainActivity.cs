@@ -7,6 +7,8 @@ using AndroidX.AppCompat.Widget;
 using AndroidX.AppCompat.App;
 using Google.Android.Material.FloatingActionButton;
 using Google.Android.Material.Snackbar;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace TestTimezoneConversion
 {
@@ -29,32 +31,42 @@ namespace TestTimezoneConversion
             btnStartTests.Click += BtnStartTests_Click;
         }
 
-        private void BtnStartTests_Click(object sender, EventArgs e)
+        private async void BtnStartTests_Click(object sender, EventArgs e)
+        {
+            await RunTest(nameof(TimeZoneConversionTests.TestConversionDotNet), TimeZoneConversionTests.TestConversionDotNet);
+            await RunTest(nameof(TimeZoneConversionTests.TestConversionJava), TimeZoneConversionTests.TestConversionJava);
+            await RunTest(nameof(TimeZoneConversionTests.TestConversionAndroidIcu), TimeZoneConversionTests.TestConversionAndroidIcu);
+            await RunTest(nameof(TimeZoneConversionTests.TestConversionSimpleDateFormat), TimeZoneConversionTests.TestConversionSimpleDateFormat);
+            await RunTest(nameof(TimeZoneConversionTests.TestConversionAndroidOffset), TimeZoneConversionTests.TestConversionAndroidOffset);
+        }
+
+        private async Task RunTest(string testName, Action executeTest)
         {
             try
             {
-                TimeZoneConversionTests.TestConversion();
+                executeTest();
 
-                ShowMessage("Test results", "Tests succesfull");
+                await ShowMessage($"{testName} results", "Test succesfull");
             }
             catch (Exception ex)
             {
-                ShowMessage("Test results", $"Error in tests: {ex}");
+                await ShowMessage($"{testName} results", $"Error in test: {ex}");
             }
         }
 
-        public void ShowMessage(string title, string message)
+        private async Task ShowMessage(string title, string message)
         {
+            var wait = new SemaphoreSlim(0);
             var dialog = new Android.App.AlertDialog.Builder(this);
             var alert = dialog.Create();
             alert.SetTitle(title);
             alert.SetMessage(message);
             alert.SetButton("OK", (c, ev) =>
             {
-                // Environment.Exit(0);
-                this.FinishAffinity();
+                wait.Release(1);
             });
             alert.Show();
+            await wait.WaitAsync();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
