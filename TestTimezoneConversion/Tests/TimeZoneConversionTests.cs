@@ -40,16 +40,6 @@ namespace TestTimezoneConversion
             TestConversion(new TimeZoneConverterDotNet());
         }
 
-        public static void TestConversionJava()
-        {
-            TestConversion(new TimeZoneConverterJava());
-        }
-
-        public static void TestConversionAndroidIcu()
-        {
-            TestConversion(new TimeZoneConverterAndroidIcu());
-        }
-
         public static void TestConversionSimpleDateFormat()
         {
             TestConversion(new TimeZoneConverterSimpleDateFormat());

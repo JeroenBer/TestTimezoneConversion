@@ -9,6 +9,7 @@ using Google.Android.Material.FloatingActionButton;
 using Google.Android.Material.Snackbar;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace TestTimezoneConversion
 {
@@ -34,10 +35,15 @@ namespace TestTimezoneConversion
         private async void BtnStartTests_Click(object sender, EventArgs e)
         {
             await RunTest(nameof(TimeZoneConversionTests.TestConversionDotNet), TimeZoneConversionTests.TestConversionDotNet);
-            //await RunTest(nameof(TimeZoneConversionTests.TestConversionJava), TimeZoneConversionTests.TestConversionJava);
-            //await RunTest(nameof(TimeZoneConversionTests.TestConversionAndroidIcu), TimeZoneConversionTests.TestConversionAndroidIcu);
             await RunTest(nameof(TimeZoneConversionTests.TestConversionSimpleDateFormat), TimeZoneConversionTests.TestConversionSimpleDateFormat);
             await RunTest(nameof(TimeZoneConversionTests.TestConversionAndroidOffset), TimeZoneConversionTests.TestConversionAndroidOffset);
+
+            await RunTest(nameof(InvalidAmbiguousTimeTests.TestInvalidTime), InvalidAmbiguousTimeTests.TestInvalidTime);
+            await RunTest(nameof(InvalidAmbiguousTimeTests.TestAmbiguousTime), InvalidAmbiguousTimeTests.TestAmbiguousTime);
+
+            await RunPerformanceTest(nameof(TimeZoneConverterPerformanceTests.TestPerformanceDotNet), TimeZoneConverterPerformanceTests.TestPerformanceDotNet);
+            await RunPerformanceTest(nameof(TimeZoneConverterPerformanceTests.TestPerformanceAndroidOffset), TimeZoneConverterPerformanceTests.TestPerformanceAndroidOffset);
+            await RunPerformanceTest(nameof(TimeZoneConverterPerformanceTests.TestPerformanceSimpleDateFormat), TimeZoneConverterPerformanceTests.TestPerformanceSimpleDateFormat);
 
             if ((int)Build.VERSION.SdkInt <= 33 && Build.VERSION.Codename != "UpsideDownCake")
             {
@@ -60,6 +66,16 @@ namespace TestTimezoneConversion
             {
                 await ShowMessage($"{testName} results", $"Error in test: {ex}");
             }
+        }
+
+        private async Task RunPerformanceTest(string testName, Action executeTest)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            executeTest();
+            sw.Stop();
+
+            await ShowMessage($"{testName} results", $"Performance {sw.Elapsed.TotalSeconds}.{sw.Elapsed.Milliseconds} sec");
         }
 
         private async Task ShowMessage(string title, string message)

@@ -17,14 +17,11 @@ namespace TestTimezoneConversion
     {
         public static void TestAndroidOffsetConversion()
         {
-
             var converterDotNet = new TimeZoneConverterDotNet();
             var converterOffset = new TimeZoneConverterAndroidOffset();
 
-
             // Test 
             var inputDateTime = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
-            var failures = 0;
 
             while (inputDateTime.Year == 2023)
             {
@@ -36,15 +33,6 @@ namespace TestTimezoneConversion
 
                     var expectedDateTime = converterDotNet.Convert(inputDateTime, "America/New_York", "Europe/Amsterdam");
 
-                    //var resultDateTime = converterOffset.Convert(inputDateTime, "UTC", "Europe/Amsterdam");
-
-                    //var expectedDateTime = converterDotNet.Convert(inputDateTime, "UTC", "Europe/Amsterdam");
-
-                    //if (resultDateTime != expectedDateTime)
-                    //{
-                    //    System.Diagnostics.Debug.WriteLine($"Failure on {expectedDateTime:yyyy-MM-dd HH:mm:ss}, result was {resultDateTime:yyyy-MM-dd HH:mm:ss}");
-                    //    failures++;
-                    //}
                     resultDateTime.Should().Be(expectedDateTime);
                     resultDateTime.Kind.Should().Be(expectedDateTime.Kind);
                 }
