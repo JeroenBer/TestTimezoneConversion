@@ -36,20 +36,21 @@ namespace TestTimezoneConversion
 
                     var expectedDateTime = converterDotNet.Convert(inputDateTime, "America/New_York", "Europe/Amsterdam");
 
-                    if (resultDateTime != expectedDateTime)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Failure on {expectedDateTime:yyyy-MM-dd HH:mm:ss}, result was {resultDateTime:yyyy-MM-dd HH:mm:ss}");
-                        failures++;
-                    }
-                    //resultDateTime.Should().Be(expectedDateTime);
-                    //resultDateTime.Kind.Should().Be(expectedDateTime.Kind);
+                    //var resultDateTime = converterOffset.Convert(inputDateTime, "UTC", "Europe/Amsterdam");
+
+                    //var expectedDateTime = converterDotNet.Convert(inputDateTime, "UTC", "Europe/Amsterdam");
+
+                    //if (resultDateTime != expectedDateTime)
+                    //{
+                    //    System.Diagnostics.Debug.WriteLine($"Failure on {expectedDateTime:yyyy-MM-dd HH:mm:ss}, result was {resultDateTime:yyyy-MM-dd HH:mm:ss}");
+                    //    failures++;
+                    //}
+                    resultDateTime.Should().Be(expectedDateTime);
+                    resultDateTime.Kind.Should().Be(expectedDateTime.Kind);
                 }
 
                 inputDateTime = inputDateTime.AddMinutes(15);
             }
-
-            System.Diagnostics.Debug.WriteLine($"Failures: {failures}");
-
         }
     }
 }

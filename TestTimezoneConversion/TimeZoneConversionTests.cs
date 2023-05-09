@@ -19,15 +19,21 @@ namespace TestTimezoneConversion
 
         private static void TestConversion(ITimeZoneConverter timeZoneConverter)
         {
-            var inputDateTime = new DateTime(2023, 5, 9, 12, 15, 30, DateTimeKind.Unspecified);
+            TestConversion(timeZoneConverter, new DateTime(2023, 5, 9, 12, 15, 30, DateTimeKind.Unspecified), "UTC", "Europe/Amsterdam", new DateTime(2023, 5, 9, 14, 15, 30, DateTimeKind.Unspecified));
+            TestConversion(timeZoneConverter, new DateTime(2023, 5, 9, 14, 15, 30, DateTimeKind.Unspecified), "Europe/Amsterdam", "UTC", new DateTime(2023, 5, 9, 12, 15, 30, DateTimeKind.Unspecified));
 
-            var resultDateTime = timeZoneConverter.Convert(inputDateTime, "UTC", "Europe/Amsterdam");
+            TestConversion(timeZoneConverter, new DateTime(2023, 5, 9, 12, 15, 30, DateTimeKind.Unspecified), "UTC", "America/New_York", new DateTime(2023, 5, 9,  8, 15, 30, DateTimeKind.Unspecified));
+            TestConversion(timeZoneConverter, new DateTime(2023, 5, 9, 14, 15, 30, DateTimeKind.Unspecified), "America/New_York", "UTC", new DateTime(2023, 5, 9, 18, 15, 30, DateTimeKind.Unspecified));
+        }
 
-            var expectedDateTime = new DateTime(2023, 5, 9, 14, 15, 30, DateTimeKind.Unspecified);
+        private static void TestConversion(ITimeZoneConverter timeZoneConverter, DateTime inputDateTime, string sourceTimeZoneId, string destinationTimeZoneId, DateTime expectedDateTime)
+        {
+            var resultDateTime = timeZoneConverter.Convert(inputDateTime, sourceTimeZoneId, destinationTimeZoneId);
 
             resultDateTime.Should().Be(expectedDateTime);
             resultDateTime.Kind.Should().Be(expectedDateTime.Kind);
         }
+
 
         public static void TestConversionDotNet()
         {

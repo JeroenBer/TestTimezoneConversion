@@ -18,8 +18,8 @@ namespace TestTimezoneConversion.Util
             // Conversion this way works but is very inefficient and might not work if separators differ for locale
             // Only for API level 24 and higher
 
-            const string JavaDateFormat = "yyyy-MM-dd HH:mm:ss";
-            const string NetDateFormat = "yyyy-MM-dd HH:mm:ss";
+            const string JavaDateFormat = "yyyyMMddHHmmss";
+            const string NetDateFormat = "yyyyMMddHHmmss";
 
             if (dateTime.Year <= 1) return dateTime;
 

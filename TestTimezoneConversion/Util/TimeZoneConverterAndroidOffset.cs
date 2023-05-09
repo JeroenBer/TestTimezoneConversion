@@ -18,7 +18,7 @@ namespace TestTimezoneConversion.Util
             var androidSourceTimeZone = Java.Util.TimeZone.GetTimeZone(sourceTimeZoneId);
             var androidDestinationTimeZone = Java.Util.TimeZone.GetTimeZone(destinationTimeZoneId);
 
-            var calendar = Java.Util.Calendar.Instance;
+            var calendar = Java.Util.Calendar.GetInstance(androidSourceTimeZone);
             calendar.Set(dateTime.Year, dateTime.Month - 1, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
 
             var timeInMs = calendar.TimeInMillis;
