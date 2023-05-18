@@ -15,6 +15,12 @@ namespace TestTimezoneConversion
 {
     internal class TimeZoneConverterPerformanceTests
     {
+        public static void TestGetSystemTimeZones()
+        {
+            var lst = TimeZoneInfo.GetSystemTimeZones();
+            System.Diagnostics.Debug.WriteLine($"GetSystemTimeZones {lst.Count}");
+        }
+
         public static void TestPerformanceDotNet()
             => TestPerformance(new TimeZoneConverterDotNet());
 

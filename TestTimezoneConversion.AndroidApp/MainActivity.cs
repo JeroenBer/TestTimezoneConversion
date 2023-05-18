@@ -19,6 +19,8 @@ namespace TestTimezoneConversion.AndroidApp
 
         private async void BtnStartTests_Click(object sender, EventArgs e)
         {
+            await RunPerformanceTest(nameof(TimeZoneConverterPerformanceTests.TestGetSystemTimeZones), TimeZoneConverterPerformanceTests.TestGetSystemTimeZones);
+
             await RunTest(nameof(TimeZoneConversionTests.TestConversionDotNet), TimeZoneConversionTests.TestConversionDotNet);
             await RunTest(nameof(TimeZoneConversionTests.TestConversionSimpleDateFormat), TimeZoneConversionTests.TestConversionSimpleDateFormat);
             await RunTest(nameof(TimeZoneConversionTests.TestConversionAndroidOffset), TimeZoneConversionTests.TestConversionAndroidOffset);
